@@ -250,7 +250,7 @@ rel="stylesheet">
             <a href="#" class="nav-link active" aria-current="page">Beranda</a>
         </li>
         <li class="nav-item"><a href="#" class="nav-link">Daftar Alat</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Masuk</a></li>
+        <li class="nav-item"><a href="{{ url('/login') }}" class="nav-link {{ request()->is('login') ? 'active' : '' }}">Masuk</a></li>
         </ul>
 </header>
       </div>

@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Category;
+use App\Models\Item;
+use App\Models\Loan;
 
 Route::get('homepage', function () {
  return view('homepage');
@@ -55,4 +58,24 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
  return view('dashboard');
+});
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/daftar', function () {
+    return view('auth.daftar');
+})->name('daftar');
+
+Route::get('/alat', function () {
+ $alat = Item::with('category')->orderBy('name')->get();
+ return view('alat', ['alat' => $alat]);
+});
+Route::get('/dashboard', function () {
+ return view('dashboard', [
+ 'jumlahAlat' => Item::count(),
+ 'jumlahKategori' => Category::count(),
+ 'sedangDipinjam' => Loan::where('status', 'dipinjam')->count(),
+ ]);
 });
