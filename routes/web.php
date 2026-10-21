@@ -4,15 +4,44 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Loan;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LoanController; 
+
+// Hanya untuk tamu (belum login)
+Route::middleware('guest')->group(function () {
+ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+ Route::post('/login', [AuthController::class, 'login']);
+ Route::get('/daftar', [AuthController::class, 'showRegister'])->name('daftar');
+ Route::post('/daftar', [AuthController::class, 'register']);
+});
+// Wajib login
+Route::middleware('auth')->group(function () {
+ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+ // Khusus admin
+ Route::middleware('admin')->group(function () {
+ Route::resource('kategori', CategoryController::class)->except('show');
+ Route::resource('alat', ItemController::class)->except(['index', 'show']);
+ });
+ // Semua yang sudah login: melihat daftar alat
+ Route::get('/alat', [ItemController::class, 'index'])->name('alat.index');
+});
 
 
-Route::get('homepage', function () {
- return view('homepage');
-})->name('home');
+Route::get('/', function () {
+    return view('homepage');
+})->name('homepage');
+
+Route::get('/halamandepan', function () {
+    return view('halamandepan');
+});
 
 Route::get('/halamanbaru', function () {
- return view('halamanbaru');
- })->name('halamanbaru');
+    return view('halamanbaru');
+})->name('halamanbaru');
 
 Route::get('/tentang', function () {
     return view('tentang');
@@ -20,78 +49,34 @@ Route::get('/tentang', function () {
 
 Route::get('/profil', function () {
     return view('profil', [
-        'nama'   => 'Anida Putri Jaya',
-        'nim'    => '225443029',
-        'kelas'  => '2AEC2',
-        'prodi'  => 'Teknik Rekayasa Informatika Industri',
+        'nama' => 'Anida Putri',
+        'nim' => '2254443029',
+        'kelas' => '2AEC2',
+        'prodi' => 'TRIN',
         'kampus' => 'Politeknik Manufaktur Bandung',
-        'hobi'   => 'Ngoding dan Membaca',      // Tambahan data hobi
-        'alamat' => 'Bandung, Jawa Barat',     // Tambahan data alamat
+        'hobi' => 'Nonton Drakor',
+        'alamat' => 'JL CCI 3 No 16',
     ]);
 });
 
 Route::get('/latihan-blade', function () {
     return view('latihan-blade', [
-        'nilai'   => 60, // Ubah jadi 72 terlebih dahulu
-        'hobi'    => ['Membaca', 'Bermain futsal', 'Ngoding'],
-        'kosong'  => [],
+        'nilai' => 60,
+        'hobi' => ['Membaca', 'Bermain futsal', 'Ngoding'],
+        'kosong' => [],
         'catatan' => '<b>Teks ini tebal</b>',
     ]);
 });
 
-Route::get('/alat', function () {
-    $alat = [
-        ['kode' => 'ALT-0001', 'nama' => 'Multimeter Digital', 'kategori' => 'Alat Ukur', 'stok' => 5],
-        ['kode' => 'ALT-0002', 'nama' => 'Osiloskop', 'kategori' => 'Alat Ukur', 'stok' => 0],
-        ['kode' => 'ALT-0003', 'nama' => 'Solder 40 Watt', 'kategori' => 'Alat Solder', 'stok' => 8],
-        ['kode' => 'ALT-0004', 'nama' => 'Arduino Uno', 'kategori' => 'Mikrokontroler', 'stok' => 12],
-        ['kode' => 'ALT-0005', 'nama' => 'Tang Potong', 'kategori' => 'Perkakas', 'stok' => 3],
-        // Tambahan 2 alat baru:
-        ['kode' => 'ALT-0006', 'nama' => 'Power Supply DC', 'kategori' => 'Alat Ukur', 'stok' => 4],
-        ['kode' => 'ALT-0007', 'nama' => 'Function Generator', 'kategori' => 'Alat Ukur', 'stok' => 0], // Stok 0 agar merah
-    ];
-    return view('alat', ['alat' => $alat]);
-});
-
-Route::get('/', function () {
- return view('nav');
-});
-
-Route::get('/dashboard', function () {
- return view('dashboard');
-});
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/daftar', function () {
-    return view('auth.daftar');
-})->name('daftar');
-
-Route::get('/alat', function () {
- $alat = Item::with('category')->orderBy('name')->get();
- return view('alat', ['alat' => $alat]);
-});
-Route::get('/dashboard', function () {
- return view('dashboard', [
- 'jumlahAlat' => Item::count(),
- 'jumlahKategori' => Category::count(),
- 'sedangDipinjam' => Loan::where('status', 'dipinjam')->count(),
- ]);
-});
+Route::resource('alat', ItemController::class)->except('show');
 
 
-Route::get('/kategori', function () {
-    $categories = Category::withCount('items')->get();
-    return view('kategori', compact('categories'));
-});
+Route::resource('kategori', CategoryController::class)->except('show');
 
-Route::get('/dashboard', function () {
-    $jumlahAlat = Item::count();
-    $jumlahKategori = Category::count();
-    $sedangDipinjam = Loan::where('status', 'borrowed')->count();
-    $stokMenipis = Item::lowStock()->count(); // <-- Tambahkan ini
-
-    return view('dashboard', compact('jumlahAlat', 'jumlahKategori', 'sedangDipinjam', 'stokMenipis'));
-});
+// Di dalam grup middleware('admin'): 
+Route::patch('/peminjaman/{peminjaman}/kembali', [LoanController::class, 
+'kembalikan'])->name('peminjaman.kembali'); 
+ 
+// Di dalam grup middleware('auth'), di luar grup admin: 
+Route::resource('peminjaman', LoanController::class)->only(['index', 'create', 
+'store']); 
