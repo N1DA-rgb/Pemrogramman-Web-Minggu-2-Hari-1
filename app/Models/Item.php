@@ -25,4 +25,8 @@ public function loans(): BelongsToMany
  // 'loan_item' = nama tabel pivot, wajib ditulis karena berbeda dari tebakan Laravel (item_loan)
  return $this->belongsToMany(Loan::class, 'loan_item')->withPivot('qty')->withTimestamps();
 }
+public function scopeLowStock(Builder $query): void
+{
+    $query->where('stock', '>', 0)->where('stock', '<', 3);
+}
 }

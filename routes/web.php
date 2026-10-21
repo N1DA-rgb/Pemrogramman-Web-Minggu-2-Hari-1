@@ -5,6 +5,7 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Loan;
 
+
 Route::get('homepage', function () {
  return view('homepage');
 })->name('home');
@@ -78,4 +79,19 @@ Route::get('/dashboard', function () {
  'jumlahKategori' => Category::count(),
  'sedangDipinjam' => Loan::where('status', 'dipinjam')->count(),
  ]);
+});
+
+
+Route::get('/kategori', function () {
+    $categories = Category::withCount('items')->get();
+    return view('kategori', compact('categories'));
+});
+
+Route::get('/dashboard', function () {
+    $jumlahAlat = Item::count();
+    $jumlahKategori = Category::count();
+    $sedangDipinjam = Loan::where('status', 'borrowed')->count();
+    $stokMenipis = Item::lowStock()->count(); // <-- Tambahkan ini
+
+    return view('dashboard', compact('jumlahAlat', 'jumlahKategori', 'sedangDipinjam', 'stokMenipis'));
 });
