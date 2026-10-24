@@ -9,6 +9,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoanController; 
+use App\Http\Controllers\RoomController;
+ 
 
 // Hanya untuk tamu (belum login)
 Route::middleware('guest')->group(function () {
@@ -29,7 +31,11 @@ Route::middleware('auth')->group(function () {
  // Semua yang sudah login: melihat daftar alat
  Route::get('/alat', [ItemController::class, 'index'])->name('alat.index');
 });
+Route::middleware('auth')->group(function () {
 
+    Route::resource('ruangan', RoomController::class)
+        ->only(['index', 'create', 'store']);
+});
 
 Route::get('/', function () {
     return view('homepage');

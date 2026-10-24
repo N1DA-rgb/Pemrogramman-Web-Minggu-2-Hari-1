@@ -14,6 +14,10 @@ route('kategori.index') }}">
 route('peminjaman.index') }}"> 
 <i class="bi bi-journal-text"></i> Peminjaman 
 </a> 
+<a class="nav-link {{ request()->is('ruangan*') ? 'active' : '' }}"
+   href="{{ route('ruangan.index') }}">
+    <i class="bi bi-building"></i> Daftar Ruangan
+</a> 
         @if (auth()->user()->isAdmin()) 
 <a class="nav-link {{ request()->is('kategori*') ? 'active' : '' }}" href="{{ 
 route('kategori.index') }}"> 

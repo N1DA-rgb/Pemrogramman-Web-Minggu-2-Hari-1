@@ -54,5 +54,13 @@
         </div>
     </div>
 </div>
+<div class="col-md-4">
+    <div class="card border-danger shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-danger">Peminjaman Terlambat</h5>
+            <h3 class="fw-bold">{{ $terlambat }}</h3>
+        </div>
+    </div>
+</div>
 </div>
 @endsection

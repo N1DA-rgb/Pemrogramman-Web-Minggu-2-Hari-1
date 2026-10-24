@@ -81,4 +81,19 @@ peminjaman.</td>
     <div class="mt-3"> 
         {{ $semuaPeminjaman->links() }} 
     </div> 
+
+    <form method="GET" action="{{ route('peminjaman.index') }}" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <select name="status" class="form-select">
+            <option value="">Semua Status</option>
+            <option value="dipinjam" @selected(request('status') == 'dipinjam')>Dipinjam</option>
+            <option value="dikembalikan" @selected(request('status') == 'dikembalikan')>Dikembalikan</option>
+        </select>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-outline-primary">
+            <i class="bi bi-search"></i> Filter
+        </button>
+    </div>
+</form>
 @endsection 
