@@ -1,58 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pustaka Digital
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 1. Deskripsi Aplikasi
 
-## About Laravel
+Pustaka Digital merupakan aplikasi berbasis web yang dikembangkan untuk mempermudah pengelolaan perpustakaan secara digital. Aplikasi ini dirancang untuk membantu proses pengelolaan data buku, anggota, serta peminjaman dan pengembalian buku agar lebih terorganisasi dan efisien.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 2. Identitas Kelompok
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| No. | Nama Anggota | NIM |
+|---|---|---|
+| 1. | Anida Putri Jaya | [Masukkan NIM] |
+| 2. | Adema | [Masukkan NIM] |
+| 3. | Haidar | [Masukkan NIM] |
+| 4. | Edra | [Masukkan NIM] |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 3. Teknologi yang Digunakan
 
-## Learning Laravel
+- **Framework:** Laravel
+- **Bahasa pemrograman:** PHP
+- **Database:** MySQL
+- **Dependency manager:** Composer
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+*Sesuaikan daftar teknologi di atas dengan teknologi yang benar-benar digunakan dalam proyek.*
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 4. Langkah Instalasi
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Ikuti langkah-langkah berikut untuk menjalankan aplikasi di komputer lokal.
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### A. Clone Repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone [URL_REPOSITORY_GITHUB]
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Masuk ke direktori proyek:
 
-## Contributing
+```bash
+cd pustaka-digital
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### B. Instal Dependensi
 
-## Code of Conduct
+Jalankan perintah berikut untuk menginstal dependensi Laravel:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+### C. Konfigurasi Environment
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Salin file `.env.example` menjadi `.env`:
 
-## License
+```bash
+cp .env.example .env
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Untuk Windows PowerShell, kamu juga bisa menggunakan:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+### D. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### E. Konfigurasi Database
+
+Buat database baru melalui MySQL atau phpMyAdmin. Setelah itu, sesuaikan konfigurasi database pada file `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=pustaka_digital
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Sesuaikan nama database, username, dan password dengan konfigurasi MySQL di komputer masing-masing.
+
+### F. Migrasi dan Seeder Database
+
+Jalankan perintah berikut untuk membuat tabel dan mengisi data awal:
+
+```bash
+php artisan migrate --seed
+```
+
+### G. Jalankan Aplikasi
+
+```bash
+php artisan serve
+```
+
+Buka browser dan akses alamat berikut:
+
+```text
+http://127.0.0.1:8000
+```
+
+## 5. Akun Pengujian
+
+Gunakan akun berikut untuk menguji aplikasi setelah proses seeding database berhasil.
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | [Email admin hasil seeder] | [Password admin hasil seeder] |
+| Mahasiswa | [Email mahasiswa hasil seeder] | [Password mahasiswa hasil seeder] |
+
+**Catatan:** Akun di atas harus disesuaikan dengan akun yang benar-benar dibuat oleh seeder proyek.
+
+## 6. Daftar Endpoint API
+
+Daftar endpoint berikut merupakan template. Sesuaikan method, URL, dan fungsi endpoint dengan route API yang tersedia pada proyek.
+
+| Method | Endpoint | Fungsi |
+|---|---|---|
+| GET | `/api/books` | Menampilkan daftar buku |
+| GET | `/api/books/{id}` | Menampilkan detail buku |
+| POST | `/api/books` | Menambahkan data buku |
+| PUT/PATCH | `/api/books/{id}` | Memperbarui data buku |
+| DELETE | `/api/books/{id}` | Menghapus data buku |
+| GET | `/api/members` | Menampilkan daftar anggota |
+| POST | `/api/loans` | Membuat data peminjaman buku |
+
+Untuk melihat endpoint yang benar-benar terdaftar di Laravel, jalankan:
+
+```bash
+php artisan route:list --path=api
+```
+
+## 7. Pengembang
+
+Proyek Pustaka Digital dikembangkan oleh kelompok mahasiswa sebagai bagian dari tugas proyek pengembangan aplikasi web.
+
